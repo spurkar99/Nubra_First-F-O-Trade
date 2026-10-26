@@ -1,24 +1,45 @@
-# Evaluation report
+# Evaluation report — v2.0
 
-## Run status — actual sandbox execution
+## Actual execution status
 
-No human results, rendered-browser results or GitHub-hosting results have been invented.
-
-| Check | Status | Evidence / scope |
+| Check | Status | Evidence and limit |
 |---|---|---|
-| Node shared suite (v24.22.1) | **PASSED — 110 / 110** | Executed `node tests/golden.test.js`; zero failed, zero skipped. |
-| Classic-script UMD shared suite | **PASSED — 110 / 110** | Same scripts loaded without CommonJS into a Node VM global context; same cases pass. This is not a rendered browser. |
-| DOM event/flow harness | **PASSED — 19 / 19** | Actual UI script and templates executed with a temporary LinkeDOM harness, including click/change events and simple browser-property shims. Not a layout or full browser test. No harness dependency is included in the deliverable. |
-| Seeded accounting invariant sequence | **PASSED — 3,600 steps** | Included as one shared-suite case: 40 seeded runs of 90 actions. Cash + remaining basis + unallocated entry fees equals starting cash + realised P&L; no negative position units or invalid reservations. |
-| Static file/path/syntax checks | **PASSED — 11 checks** | Relative asset references resolve; JS syntax checks; no runtime fetch/XHR/WebSocket/remote imports; empty `.nojekyll`; required files. |
-| Rendered browser / mobile / keyboard layout | **NOT RUN** | Browser startup was attempted. The bundled executable was unavailable; official Chrome was obtained but the sandbox denied its required local socket (`Operation not permitted`). A remote browser could not reach the scratch server. No screenshots or visual/accessibility conformance are claimed. |
-| `tests.html` in a real browser | **NOT RUN** | Browser page is included and invokes the same shared suite automatically. Open it to obtain its actual result. Classic-script VM execution above does not substitute for this. |
-| Human baseline/review comprehension | **NOT RUN** | Blank protocol/scoring sheet supplied in COMPREHENSION_TEST.md. |
-| Actual GitHub Pages deployment | **NOT RUN** | User must upload/enable Pages and verify its final URL. Static relative paths checked; no hosting account was changed. |
+| Node shared suite (v24.22.1) | **PASSED — 121/121** | Same browser/Node cases, including 3,600 seeded accounting-invariant steps. Zero failed/skipped. |
+| Real Chrome: tests.html | **PASSED — 121/121** | Managed static preview; browser table reported 121 PASSED / 0 FAILED / 0 NOT RUN. |
+| Real Chrome under /repo-check/ prefix | **PASSED — 121/121** | Same suite from a repository-style nested path, then actual F&O disclosure entry. |
+| Classic-script UMD in Node VM | **PASSED — 121/121** | No CommonJS globals; all modules loaded as classic scripts. Not a substitute for browser transport. |
+| DOM event/flow harness | **PASSED — 29/29** | Actual UI logic, click/change/input events; temporary LinkeDOM runtime with browser-property shims. No dependency included in the ZIP. |
+| Static audit | **PASSED — 14 checks** | Relative files, syntax, no runtime network calls, empty .nojekyll, labels and output checks. |
+| Real-browser desktop flows | **PASSED — listed below** | Actual rendered managed preview and DOM states; no human comprehension result implied. |
+| Responsive / keyboard subset | **PASSED — listed below** | 390px iframe viewport in actual Chrome; 375px content width after scrollbar, no document horizontal overflow at workspace/review. Not physical-device certification. |
+| Direct file:// browser transport | **NOT RUN** | Cloud browser security policy disallows file: URLs. No browser-policy workaround attempted. Static relative assets and classic-script execution passed; user can open index.html/tests.html directly. |
+| Human comprehension | **NOT RUN** | Complete protocol and blank scoring sheet supplied. |
+| Actual v2 GitHub Pages deployment | **NOT RUN** | Repository/live v1 were inspected; no commits, PRs, or remote deployment made. User uploads this root-layout ZIP. |
 
-### Release interpretation
+## Live audit and improvements
 
-Engine and DOM-flow checks pass. This is an offline concept deliverable, not a production broking integration. Rendered visual/keyboard/mobile checks and participant comprehension remain unverified. Software pass counts do not validate the research hypothesis or show suitability.
+Inspected the provided GitHub repository and published v1 demo. Its matching source commit was `5beb947d74d602dcde994d381eec2c3221d75910`. Nine advanced sidebar controls ended in a stub toast, the option dropdown had one choice, and normal fills required evaluator controls. The v2 changes are recorded in CHANGES.md. Source claims remain separate from synthetic assumptions.
+
+## Actual real-browser interaction checks
+
+| Check actually performed | Observed outcome | Status |
+|---|---|---|
+| F&O entry | Opens the dated risk disclosure before the optional guide choice. | PASSED |
+| Disclosure acknowledgement | Opens optional invitation with guided and unguided choices. | PASSED |
+| Guided chain | Labels OI/volume in contracts; explanatory buttons and three paired strikes are present. | PASSED |
+| Edit lots from 1 to 2 | Live quantity becomes 130 units, premium ₹13,026, entry funds ₹13,051; focused input remains. | PASSED |
+| Click review directly after editing | Correct two-lot review opens; no swallowed next click. | PASSED |
+| Normal entry and exit without evaluator drawer | Submit remains pending; explicit simulated fill opens 130 units; closing fill closes them and records net loss ₹76. | PASSED |
+| Watchlist, Market Watch, Strategies, Scalper, Investment, AI, Cloud, Terminal, Alerts | All nine open labelled content panels and close back to the current flow. | PASSED |
+| Constructed baseline | Explicit baseline invitation; labelled plain summary; zero proactive guidance cards. | PASSED |
+| Repository-style nested path | tests.html passes all 121 checks, and index.html opens F&O disclosure. | PASSED |
+| Narrow 390px iframe viewport | Guided entry/ticket/review reached; document scroll width equals client width (375px after scrollbar). | PASSED |
+| Keyboard expiry slider in narrow viewport | Home key produces full-loss example −₹6,563 for one A lot; does not submit an order. | PASSED |
+| Selected-order metric popup | Breakeven popup explains the selected order’s approximate 22,700.97 expiry root and cost assumptions. | PASSED |
+| Metric search | Searching premium produces 17 relevant definitions; Premium opens its actual explanation. | PASSED |
+| Advice boundary through visible AI/term panel | “Which strike should I buy?” returns the fixed no-selection/no-forecast explanation. | PASSED |
+
+Native dialog focus and real keyboard interactions were exercised in the subset above. This is not a comprehensive WCAG audit or physical mobile-device test. A failed attempt to press a page-level key through a body locator was replaced by the supported native key route; no software test was falsely reported as executed by that failed attempt.
 
 ## Golden financial cases
 
@@ -79,13 +100,15 @@ All rows below have executable checks in the shared suite; the full per-case res
 | Expiry | Unfilled DAY remainders expire; supported filled positions settle using explicit synthetic level and fees; repeated processing rejected. |
 | Reset | Orders, positions, review, fees/scenarios, idempotency, clock and reservations cleared. |
 
-## Tone / advice-leakage checklist
 
-- PASSED (automated template checks): no reassurance, suitability label, urgency, celebration, guarantee of profit or prompt to trade again.
-- PASSED (automated checks): expiry is explicit; costs are additional; favourable direction does not guarantee an option profit; which-strike response does not name a contract.
-- PASSED (DOM flow checks): order/quantity preserved through review; constructed baseline/proposed ticket labels; back-out flow available; unsupported opening sale blocked.
-- PRESENT IN SOURCE; rendered verification NOT RUN: visible focus styling, semantic labels, keyboard-native buttons/inputs/details, profit/loss words in addition to colour, responsive CSS.
-- NOT RUN (human): whether the copy sounds reassuring, confusing, frightening or advisory to actual first-time users.
+## Tone and advice checks
+
+- Automated core template checks pass: no reassurance, suitability badge, urgency, celebration, guaranteed profit or prompt to trade again.
+- New guidance definitions include cautions; POP/IV/Greeks are explicitly uncalculated rather than invented numbers.
+- Historical group loss rates are labelled FY 2021–22 and are explicitly not a probability for the selected order.
+- Both guide acceptance and decline are supported; guide can be turned off without blocking review.
+- Sidebar overviews do not pretend that live cloud/scalper/alert services have been implemented.
+- Human judgement of comprehension, emotional framing and whether the copy feels advisory remains NOT RUN.
 
 ## Shared executable case results
 
@@ -201,10 +224,19 @@ All rows below have executable checks in the shared suite; the full per-case res
 | Copy | Before-expiry explanation permits loss despite favourable direction | PASSED |
 | Copy | No feasible breakeven is stated rather than fabricated | PASSED |
 | Ledger | 3,600 seeded purchase/fill/cancel/exit steps reconcile cash, basis and fees | PASSED |
+| Guidance | All displayed critical metrics have complete definitions and cautions | PASSED |
+| Guidance | Nine sidebar overviews have actual content rather than a dead-end stub | PASSED |
+| Guidance | Order explanation reflects actual lots, units and costs | PASSED |
+| Guidance | Metric explanation uses selected-order premium and expiry breakeven | PASSED |
+| Guidance | Missing selected-order context never fabricates a personalised number | PASSED |
+| Guidance | Historical disclosure is dated and explicitly not personal order odds | PASSED |
+| Guidance | Advanced probabilities and Greeks are not invented numerical values | PASSED |
+| Guidance | Search finds premium and uses an empty result for unknown terms | PASSED |
+| Fixtures | All six normal chain contracts support valid purchase reviews | PASSED |
+| Fixtures | Synthetic paired ask differences are consistent with the stipulated spot/strike | PASSED |
+| Fixtures | Chain activity is explicitly reported in contracts | PASSED |
 
 ## Separate DOM-harness results
-
-These are Node DOM tests, **not browser rendering tests**. The harness was a temporary build-time tool and is not required by this site.
 
 | Flow | Actual status |
 |---|---|
@@ -224,26 +256,39 @@ These are Node DOM tests, **not browser rendering tests**. The harness was a tem
 | Low loss budget, invalid budget, and explicit not-sure states | PASSED |
 | Stop-limit control and gap scenario activate but do not fill exit | PASSED |
 | Expiry input settles arithmetic fixture and expires its unfilled remainder | PASSED |
-| Reset clears all simulation state and returns to chain | PASSED |
-| Stub navigation returns scope message without changing view | PASSED |
+| Reset clears all simulation state and replays the disclosure on next F&O entry | PASSED |
+| Sidebar navigation opens an actual overview without changing the order | PASSED |
 | Pending and rejected status screens remain distinct | PASSED |
+| F&O opens disclosure first; leaving it does not acknowledge or start a tour | PASSED |
+| Disclosure acknowledgement leads to an optional, explicit guidance choice | PASSED |
+| Guide can be enabled, disabled and enabled again without changing an order | PASSED |
+| Numeric input updates values without replacing the focused form control | PASSED |
+| Each sidebar overview has a labelled dialog and keeps the current screen | PASSED |
+| Metric help uses selected order numbers and search has meaningful results | PASSED |
+| Both option chain view choices change the columns | PASSED |
+| User-facing simulated fill opens and closes a position without evaluator drawer | PASSED |
+| Expiry slider changes the conditional result without changing the order | PASSED |
+| Offline term helper declines which-strike questions | PASSED |
 
-## Static audit results
+## Static audit
 
 | Check | Status |
 |---|---|
-| tests.html relative references exist | PASSED |
-| index.html relative references exist | PASSED |
-| tests/golden.test.js syntax and no remote calls | PASSED |
-| assets/js/engine.js syntax and no remote calls | PASSED |
-| assets/js/ui.js syntax and no remote calls | PASSED |
-| assets/js/simulator.js syntax and no remote calls | PASSED |
-| assets/js/explain.js syntax and no remote calls | PASSED |
-| assets/js/fees.js syntax and no remote calls | PASSED |
-| assets/js/fixtures.js syntax and no remote calls | PASSED |
+| index.html relative assets exist (including static query keys) | PASSED |
+| tests.html relative assets exist (including static query keys) | PASSED |
+| assets/js/engine.js syntax / no remote runtime calls | PASSED |
+| assets/js/ui.js syntax / no remote runtime calls | PASSED |
+| assets/js/guide.js syntax / no remote runtime calls | PASSED |
+| assets/js/simulator.js syntax / no remote runtime calls | PASSED |
+| assets/js/explain.js syntax / no remote runtime calls | PASSED |
+| assets/js/fees.js syntax / no remote runtime calls | PASSED |
+| assets/js/fixtures.js syntax / no remote runtime calls | PASSED |
+| tests/golden.test.js syntax / no remote runtime calls | PASSED |
 | Empty .nojekyll | PASSED |
-| Required deliverable files exist (EVALS generated next) | PASSED |
+| No dead-end sidebar stub response remains | PASSED |
+| Proposed ticket identity preserved | PASSED |
+| Screenshot proof file available | PASSED |
 
 ## Re-run
 
-Run `node tests/golden.test.js`, or open `tests.html` to execute all shared cases in your browser. Record any new failure honestly. Then use COMPREHENSION_TEST.md with participants. Keep actual build prompts, including failed attempts, unedited; no prompt log or one-pager has been written in this package.
+Open tests.html to run the same shared cases in your browser, or execute `node tests/golden.test.js` if Node is installed. Neither requires npm packages. Run COMPREHENSION_TEST.md separately with people and retain their exact uncoached answers. No one-pager or prompt log is included.

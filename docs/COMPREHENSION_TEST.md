@@ -63,3 +63,14 @@ Record the exact order you actually used. Do not describe sequential comparison 
 ## Report honestly
 
 Report counts by dimension and participant, critical errors, confidence calibration, actual quotes and changes made. Do not extrapolate to all traders or claim validated differentiation from 2–3 people. No 90-day outcomes are available. A later longitudinal study should pair brokerage engagement with comprehension, surprise-cost reports, accidental-short rates, complaints and voluntary non-trading, rather than reward derivatives trade frequency.
+
+## v2 onboarding and experimental controls
+
+Both conditions encounter the historical disclosure before F&O access. Baseline shows an explicit baseline invitation and no proactive guidance cards. Review offers optional guidance; record whether the participant opts in. Do not score a voluntary decline as failure.
+
+Choose and document one comparison:
+
+1. **Whole-experience comparison:** unguided baseline versus optional guided review journey. The measured difference may include learning from the ticket/chain cards, not just the final review.
+2. **Review-only comparison:** give identical preceding exposure/help to both conditions, then compare the plain summary with the consequence review. Record any manual glossary usage, as it can influence answers.
+
+The glossary is available on demand in both modes. Do not interpret clicking “I understand” as demonstrated comprehension. Use the four uncoached questions and fixture-order reversal. No new participant results were generated for this update.

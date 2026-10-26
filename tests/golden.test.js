@@ -1,10 +1,10 @@
 (function(root,factory){
   if(typeof module==='object'&&module.exports){
-    var suite=factory(require('../assets/js/engine.js'),require('../assets/js/fees.js'),require('../assets/js/fixtures.js'),require('../assets/js/simulator.js'),require('../assets/js/explain.js'));
+    var suite=factory(require('../assets/js/engine.js'),require('../assets/js/fees.js'),require('../assets/js/fixtures.js'),require('../assets/js/simulator.js'),require('../assets/js/explain.js'),require('../assets/js/guide.js'));
     module.exports=suite;
     if(require.main===module){var results=suite.run();results.forEach(function(r){console.log((r.pass?'PASSED':'FAILED')+' | '+r.area+' | '+r.name+(r.detail?' | '+r.detail:''));});var failed=results.filter(function(r){return !r.pass;}).length;console.log('\n'+(results.length-failed)+' PASSED / '+failed+' FAILED / 0 NOT RUN');if(failed)process.exitCode=1;}
-  }else root.FTTests=factory(root.FTEngine,root.FTFees,root.FTFixtures,root.FTSimulator,root.FTExplain);
-}(typeof globalThis!=='undefined'?globalThis:this,function(E,Fees,F,S,X){
+  }else root.FTTests=factory(root.FTEngine,root.FTFees,root.FTFixtures,root.FTSimulator,root.FTExplain,root.FTGuide);
+}(typeof globalThis!=='undefined'?globalThis:this,function(E,Fees,F,S,X,G){
   'use strict';
   function equal(a,b){if(a!==b)throw new Error('Expected '+JSON.stringify(b)+'; received '+JSON.stringify(a));}
   function ok(v,msg){if(!v)throw new Error(msg||'Expected truthy value.');}
@@ -139,6 +139,21 @@
         }
       }
     });
+    test('Guidance','All displayed critical metrics have complete definitions and cautions',function(){
+      ['spot','strike','call','put','premium','ltp','bid','ask','spread','oi','volume','priceChange','dayRange','expiry','lots','lotSize','units','tick','limit','day','carry','cash','budget','fees','entryFunds','maxLoss','netLoss','breakeven','available','reserved','position','pending','filled','averageFill','unrealised','realised','stop','trigger'].forEach(function(k){var t=G.get(k);ok(t&&t.title&&t.definition.length>15&&t.caution.length>15,k);});
+    });
+    test('Guidance','Nine sidebar overviews have actual content rather than a dead-end stub',function(){
+      ['Watchlist','Market Watch','Strategies','Scalper','Investment','AI','Cloud','Terminal','Alerts'].forEach(function(k){ok(G.sidebar[k]&&G.sidebar[k].length===3);ok(G.sidebar[k].join(' ').length>100);ok(!G.sidebar[k].join(' ').includes('Not part of this prototype'));});
+    });
+    test('Guidance','Order explanation reflects actual lots, units and costs',function(){var o=F.order('A',2),c=F.contract('A'),text=G.describeOrder(c,o,E.analyse(c,o,fees));ok(text.includes('2 lots (130 units)'));ok(text.includes('₹13,026.00'));ok(text.includes('₹25.00'));ok(text.includes('not the index itself'));});
+    test('Guidance','Metric explanation uses selected-order premium and expiry breakeven',function(){var ctx={contract:gc,order:fc,quote:F.quote('GOLD-C'),analysis:a};ok(G.get('entryFunds',ctx).example.includes('₹5,025.00'));ok(G.get('breakeven',ctx).example.includes('20,101.00'));ok(G.get('maxLoss',ctx).example.includes('₹5,000.00'));});
+    test('Guidance','Missing selected-order context never fabricates a personalised number',function(){equal(G.get('entryFunds',{}).example,'');equal(G.get('breakeven',{}).example,'');equal(G.get('unknown',{}),null);});
+    test('Guidance','Historical disclosure is dated and explicitly not personal order odds',function(){equal(G.risk.period,'FY 2021–22');equal(G.risk.bullets.length,4);ok(G.risk.context.includes('not the probability'));ok(G.risk.context.includes('not presented as the latest'));});
+    test('Guidance','Advanced probabilities and Greeks are not invented numerical values',function(){['pop','iv','delta','gamma','theta','vega','pcr','maxPain'].forEach(function(k){ok(G.get(k).caution.toLowerCase().includes('not calculated'));});});
+    test('Guidance','Search finds premium and uses an empty result for unknown terms',function(){ok(G.search('premium').includes('premium'));equal(G.search('zzzz-nonexistent').length,0);});
+    test('Fixtures','All six normal chain contracts support valid purchase reviews',function(){['A','B','E','F','G','H'].forEach(function(id){var s=setup(id);ok(s.review().ok,id);});});
+    test('Fixtures','Synthetic paired ask differences are consistent with the stipulated spot/strike',function(){[['E','F'],['A','B'],['G','H']].forEach(function(pair){var cq=F.quote(pair[0]),pq=F.quote(pair[1]),c=F.contract(pair[0]);equal(cq.askPaise-pq.askPaise,cq.spotPaise-c.strikePaise);});});
+    test('Fixtures','Chain activity is explicitly reported in contracts',function(){['A','B','E','F','G','H'].forEach(function(id){var st=F.stats(id);ok(E.positive(st.oiContracts));ok(E.positive(st.volumeContracts));ok(st.lowPaise<=st.ltpPaise&&st.ltpPaise<=st.highPaise);});});
     return results;
   }
   return {run:run};

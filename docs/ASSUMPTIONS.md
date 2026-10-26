@@ -1,4 +1,4 @@
-# Assumptions and evidence boundaries
+# Assumptions and evidence boundaries — v2.0
 
 ## Status labels
 
@@ -28,7 +28,7 @@
 - **ASSUMED:** expiry processing is one simplified event: expire pending remainders and settle filled index positions. A repeated settlement is blocked. This is not an exchange or broker implementation.
 - **ASSUMED:** cancellation is synchronous but records “requested” and “completed” events. A rejected/cancelled remainder never erases existing fills.
 - **ASSUMED:** all state lives in memory. Reload/Reset clears account state. No personal data is transmitted, stored remotely or restored across sessions.
-- **ASSUMED:** mode is stored only in the hash (`#?mode=baseline` or `#?mode=review`). The app has no SPA server routing dependency. Baseline compares purchase review only; execution validations and exit flow are shared.
+- **ASSUMED:** mode is stored only in the hash (`#?mode=baseline` or `#?mode=review`). The app has no SPA server routing dependency. Baseline omits proactive guidance; execution validations and exit mechanics are shared. Record whether a comprehension comparison tests the entire guided journey or review only.
 
 ## Fees and arithmetic
 
@@ -53,3 +53,25 @@
 7. Test your deployed GitHub Pages link logged out. Actual GitHub hosting/account permissions cannot be validated until you upload and enable Pages.
 
 No runtime AI, network requests, API keys, copied brand assets, third-party scripts or real account data are used.
+
+## v2 decisions and current evidence
+
+- **OBSERVED — live demo and GitHub:** inspected the supplied Pages site and repository at commit `5beb947d74d602dcde994d381eec2c3221d75910`. The original nine advanced sidebar controls stopped at a toast and the chain dropdown had one choice. The update changes local source and provides a ZIP; no remote commit, PR or deployment was made.
+- **ASSUMED — “same error”:** interpreted the requested popup as the F&O risk disclosure in the supplied Nubra screenshot, not KYC pending or a trading rejection. It is reproduced with explicit historical context. No account error or fake failed KYC is introduced.
+- **SOURCED — disclosure:** the four historical figures match the supplied screenshot and SEBI circular of 19 May 2023. Its cited underlying study covers FY 2021–22 (published 25 January 2023). This is not a current personal loss probability. Current prescribed wording still needs a separate production review.
+- **ASSUMED — scope expansion:** a short optional, order-specific guidance layer, searchable definitions and sidebar summaries have been added. No compulsory tutorial, quiz, recommendations, readiness badge or return forecast is introduced. Declining or turning off guidance does not prevent the normal review flow.
+- **ASSUMED — navigation:** Option Chain, Orders and Portfolio are working areas. The other nine navigation entries are informative overview panels, not implemented trading products. The AI panel is a deterministic term helper and expressly has no runtime model.
+- **ASSUMED — normal chain:** E/F at strike 22,500 and G/H at 22,700 supplement A/B at 22,600; all are invented. Their ask differences equal the stipulated spot–strike difference for internal fixture consistency, not a full arbitrage-free pricing model. C no-bid and D physical-settlement remain separate edge fixtures.
+- **ASSUMED — metrics:** OI and volume are now explicitly in contracts. Price/activity uses invented previous closes and ranges. Numerical IV, Greeks, PCR, POP and max pain are not calculated; the glossary explains their meaning and limits.
+- **ASSUMED — simulation usability:** a normal visitor may trigger a synthetic fill from the order-status screen. It still uses the original matching/depth rules, does not automatically execute, and cannot place real orders. Additional controls remain in the evaluator drawer.
+- **ASSUMED — disclosure timing:** the popup occurs at first F&O entry per in-memory session and repeats after Reset. This is a demonstration choice, not a claim to reproduce every required broker disclosure occasion.
+- **ASSUMED — metric help:** manual metric help is available in both comparison modes. Baseline suppresses the proactive context cards and uses an explicit baseline invitation. Comprehension reports must say whether the experiment tested the entire guided journey or only the final review, to avoid attributing earlier learning solely to the review screen.
+- **ASSUMED — version/cache:** a v2.0 label and relative static cache keys make the new assets recognisable. No fetch, external font, CDN, API or runtime dependency was added.
+
+### Source references (documentation only; the app makes no network request)
+
+- User-supplied Nubra/Kite captures and v2 conversation log.
+- https://www.sebi.gov.in/sebi_data/attachdocs/may-2023/1684493716856.pdf
+- https://www.nseindia.com/option-chain
+- https://support.zerodha.com/category/trading-and-markets/charts-and-orders/order/articles/what-are-stop-loss-orders-and-how-to-use-them
+- https://robinhood.com/us/en/support/articles/placing-an-options-trade/ (benchmark only, not Indian settlement rules).

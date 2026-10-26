@@ -1,8 +1,19 @@
-# Order clarity — first-options-order concept
+# Order clarity v2.0 — first-options-order concept
 
 A static, offline concept prototype for reviewing a **user-selected, single-leg, cash-settled index option purchase**. It explains the selected order; it does not pick contracts, forecast returns, size positions, or execute real orders. Closing an existing long is supported. Opening option sales, stock options, futures, live feeds and real execution are excluded.
 
 The dark dashboard uses original SVG paths, CSS and system fonts. It has no logos, copied assets, external libraries, CDNs, API keys, runtime AI, server component or build process. The ticket is a **proposed interface**, not a captured Nubra ticket. Every price and account amount is synthetic.
+
+## What changed in v2
+
+- F&O entry now opens a research-based historical risk disclosure, then an optional guidance invitation. Declining guidance still opens the chain.
+- Guidance is contextual: chain orientation, your actual order in plain language, consequences at review, and the order/position distinction. It is not a compulsory tutorial.
+- Every sidebar button now responds: the three core areas navigate; nine advanced areas open short, labelled overviews. They are explanations, not fake working cloud/AI/scalper services.
+- Inline question marks and a searchable glossary explain every financial metric displayed. Advanced Greeks and POP are defined but not assigned invented values.
+- The option-view dropdown really changes the chain columns. Six coherent normal contracts are user-selectable; special and regression fixtures stay in evaluator controls. OI and volume explicitly use contracts.
+- An interactive expiry-outcome slider calculates a conditional result without changing the order. It does not forecast the market.
+- Simulate a fill / Simulate closing fill now sit in the normal order flow. Evaluator controls are for exceptional scenarios, not required for the ordinary journey.
+- Numeric edits update values without replacing the focused input or swallowing the next click.
 
 ## Open immediately
 
@@ -28,9 +39,9 @@ The bottom **Evaluator controls** drawer is intentionally separate from the user
 
 ### Normal journey
 
-1. Select a synthetic call or put in Option Chain. Confirm lots and the editable limit premium. The initial one-lot value is a minimum-lot form placeholder, not a size recommendation; it must be reviewed explicitly.
-2. Select **Review order**, inspect consequences, then Edit order, Back out, or Place simulated order. Nothing fills automatically.
-3. Open Evaluator controls and choose **Fill now** for the active order. A fill still needs a marketable limit and whole-lot quoted depth. Open Portfolio, Position details, Exit position, review the closing sale, and submit. Use Fill now again to simulate the exit.
+1. Click **F&O**. Read the dated disclosure; **I understand** leads to an optional guidance choice. Use guided view or continue without guidance. Then select a synthetic call or put in Option Chain. Confirm lots and the editable limit premium. The initial one-lot value is a minimum-lot form placeholder, not a size recommendation; it must be reviewed explicitly.
+2. Select **Review order**, inspect consequences, then Edit order, Back out, or Place simulated order. Nothing fills automatically. Every question mark opens a short explanation; Metrics explained searches the full glossary.
+3. On Order status, choose **Simulate a fill**. A fill still needs a marketable limit and whole-lot quoted depth. Open Portfolio, Position details, Exit position, review the closing sale, and submit. Choose **Simulate closing fill** to close it. The evaluator drawer provides additional partial/reject/pending scenarios.
 
 ### Scenario picker
 
@@ -57,7 +68,7 @@ The bottom **Evaluator controls** drawer is intentionally separate from the user
 - To cancel, open the order and choose **Cancel unfilled remainder**. A partial position remains open. A cancellation request and completion are synchronous simulated events, recorded in the order history.
 - **Test opening Sell:** attempts the unsupported opening-sale path; it does not send an order.
 - **Process synthetic expiry:** enter a non-negative settlement level. Advances the frozen clock to expiry, expires unfilled DAY remainders, cancels pending exits by expiring them, and cash-settles filled supported positions. This simplified event is not a replica of exchange/broker intraday operations. Reset to start over.
-- **Reset simulation:** clears all positions, orders, fees/scenarios, idempotency records, reservations and clock changes. Mode selection remains as chosen.
+- **Reset simulation:** clears all positions, orders, fees/scenarios, idempotency records, reservations and clock changes. Mode selection remains as chosen. The F&O disclosure and optional invitation repeat after reset.
 
 ### Separate fixtures
 
@@ -65,7 +76,7 @@ The drawer can open A–D or isolated arithmetic/regression fixtures. The 22,600
 
 ### Baseline comparison
 
-Open `index.html#?mode=baseline` or `index.html#?mode=review`, or use the top mode switch. Baseline shows a plain **constructed** order summary, labelled “Constructed baseline, not Nubra's ticket.” The shared validation and execution restrictions apply in both modes. The comparison is the purchase review moment; the exit flow is identical in both modes. See `docs/COMPREHENSION_TEST.md` for the test script and reversal protocol.
+Open `index.html#?mode=baseline` or `index.html#?mode=review`, or use the mode switch in Evaluator controls. Baseline shows a plain **constructed** order summary, labelled “Constructed baseline, not Nubra's ticket.” The shared validation and execution restrictions apply in both modes. Baseline suppresses contextual guidance and identifies itself explicitly. The comparison can test the complete optional guided experience, or the purchase review only if both conditions receive the same preceding help. Record which design you tested. Exit mechanics are shared. See `docs/COMPREHENSION_TEST.md` for the test script and reversal protocol.
 
 ## Fees and calculations
 
@@ -80,8 +91,12 @@ Replacing the fee profile with a real tariff may require a richer fee adapter; d
 - `assets/js/engine.js`: validation, quantities, costs, expiry and realised P&L.
 - `fees.js`: synthetic fee provider; `fixtures.js`: isolated datasets.
 - `simulator.js`: reviews, idempotency, reservations, fills, cancellations, closes and settlement.
-- `explain.js`: deterministic templates; `ui.js`: DOM and scenario controls.
+- `explain.js`: deterministic order templates; `guide.js`: metric explanations, sidebar overviews and dated disclosure content; `ui.js`: accessible dialogs, opt-in flow, DOM and scenario controls.
 - `tests/golden.test.js`: shared UMD suite for Node and `tests.html`.
 - `docs/ASSUMPTIONS.md`: all synthetic choices and unverified boundaries.
 
 No one-pager or prompt log is included. Retain the actual prompts from this chat and any other builder, including unsuccessful attempts; do not rewrite them retrospectively.
+
+## Disclosure evidence
+
+The first-entry popup recreates the four figures seen in the supplied Nubra screenshot, with the missing context made explicit: the underlying population study covers FY 2021–22 and was published on 25 January 2023; the disclosure circular is dated 19 May 2023. These annual group outcomes are not the odds for one order and are not described as the latest statistics. The prototype does not assert current regulatory compliance. If you intended a different error popup, replace it only after obtaining its exact screenshot.
