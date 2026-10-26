@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="An offline concept prototype for understanding a chosen first options order. Synthetic data, simulated orders only.">
+  <title>Order clarity · Concept prototype</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="concept-banner">Concept prototype - Synthetic data - No real orders</div>
+  <header class="topbar"><div class="wordmark">ORDER<span> / </span>CLARITY <span class="concept-tag">CONCEPT</span></div>
+    <div class="mode-control" role="group" aria-label="Comprehension test mode"><button id="review-mode" data-mode="review">Review layer</button><button id="baseline-mode" data-mode="baseline">Baseline</button></div>
+    <a class="test-link" href="tests.html">Run tests <span aria-hidden="true">↗</span></a>
+  </header>
+  <div class="market-strip"><span class="strip-label">SYNTHETIC SNAPSHOT</span><span>DEMO INDEX <b>22,608.20</b></span><span>DEMO BANK <b>688.00</b></span><span id="clock-label">26 Oct 2026 · 13:00 IST</span><span class="offline-label">Offline simulation</span></div>
+  <div class="workspace"><nav id="sidebar" class="sidebar" aria-label="Dashboard navigation"></nav><main id="main" tabindex="-1"><div id="app"></div></main></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <details id="evaluator" class="evaluator">
+    <summary><span class="drawer-dot" aria-hidden="true"></span> Evaluator controls <span class="summary-meta">Reproducible scenarios · frozen clock</span></summary>
+    <div class="drawer-content">
+      <p class="policy-note">Prototype policies, not Nubra or exchange rules: stale &gt; 30 seconds; spread &gt; 5% of midpoint blocks review. Fills are evaluator-triggered and must match a price and whole-lot depth.</p>
+      <div class="controls-grid">
+        <label>Scenario<select id="scenario"><option value="normal">Normal</option><option value="stale">Stale quote</option><option value="wide">Wide spread</option><option value="no-bid">No bid</option><option value="missing-fees">Missing fees</option><option value="changed">Data changed after review</option><option value="missing-data">Missing contract data</option><option value="expired">Expired contract</option><option value="stop-gap">Gap below pending stop-limit</option></select></label>
+        <button id="apply-scenario" class="secondary">Apply scenario</button>
+        <label>Separate test fixture<select id="fixture"><option value="">Choose a fixture</option><option value="A">A · Synthetic normal call</option><option value="B">B · Synthetic normal put</option><option value="C">C · Synthetic no-bid call</option><option value="D">D · Synthetic stock option (blocked)</option><option value="REG-C">Regression · 22,600 CE, ₹150.45</option><option value="REG-P">Regression · 22,600 PE, ₹78.95</option><option value="GOLD-C">Arithmetic · 20,000 CE, ₹100</option><option value="GOLD-P">Arithmetic · 20,000 PE, ₹100</option></select></label>
+        <button id="load-fixture" class="secondary">Open fixture</button>
+      </div>
+      <div class="controls-grid fill-grid"><label>Active simulated order<select id="active-order"><option value="">No submitted orders</option></select></label><button id="fill-now" class="secondary">Fill now</button><button id="partial-fill" class="secondary">Partial 50%</button><button id="reject-order" class="secondary">Reject remainder</button><button id="stay-pending" class="secondary">Let it stay pending</button></div>
+      <div class="controls-grid"><label>Expiry settlement level<input id="settlement-level" inputmode="decimal" value="22600.00"></label><button id="settle" class="secondary">Process synthetic expiry</button><button id="reset" class="danger-outline">Reset simulation</button><button id="open-sell" class="secondary">Test opening Sell</button></div>
+      <p id="evaluator-result" class="drawer-result" role="status" aria-live="polite">Select a contract or test fixture to begin. Partial 50% needs at least two remaining lots.</p>
+      <p class="small">No real account or network connection. Reset clears all orders, positions, reservations, and scenarios. Reload also starts a fresh simulation.</p>
+    </div>
+  </details>
+  <script src="assets/js/fees.js"></script><script src="assets/js/fixtures.js"></script><script src="assets/js/engine.js"></script><script src="assets/js/simulator.js"></script><script src="assets/js/explain.js"></script><script src="assets/js/ui.js"></script>
+</body>
+</html>
