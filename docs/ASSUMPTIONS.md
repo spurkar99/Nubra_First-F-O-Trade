@@ -1,77 +1,59 @@
-# Assumptions and evidence boundaries — v2.0
+# Evidence, assumptions and limitations — v2.1 P0
 
-## Status labels
+## Evidence labels
 
-- **OBSERVED:** visual details supplied in research screenshots only.
-- **SOURCED:** provided brief/log statements or mathematics derived from explicitly stipulated inputs. This does not turn a user's report or an AI inference into independently verified market evidence.
-- **ASSUMED:** prototype policy, synthetic fixture, design proposal or unverified interpretation.
+**OBSERVED** means visible in supplied screenshots or the inspected prototype. **REPORTED** means the candidate's notes/log, not an independently observed behaviour. **ASSUMED** is a design or simulation choice. Mathematics is derived from stipulated fixture inputs, not verified current market data.
 
-## What this package claims
+## Research boundaries
 
-1. **SOURCED — brief:** Problem 04 targets an equity investor placing a first options trade. Deliverables are a 300–700-word one-pager, actual prompts including failures, evals and an accessible app link. This package provides the prototype and evaluation materials, not your one-pager or prompt log.
-2. **ASSUMED — scope:** single-leg, cash-settled index option purchases only; sell-to-close is supported. Futures, stock options, opening sales, recommendations, live feeds and real execution are excluded. These restrictions are implementation scope, not a suitability judgement or regulator-approved beginner product.
-3. **OBSERVED — screenshots:** dark web dashboard, sidebar, market strip, dense option chain and Option Buyer label. This implementation uses original HTML/CSS/SVG; no brand logos, screenshots, proprietary assets or external fonts are embedded.
-4. **ASSUMED — ticket:** the actual Nubra order ticket was not observed. Ticket, review, lifecycle and baseline designs here are proposals. The app labels the proposed ticket and constructed baseline accordingly.
-5. **SOURCED — research report:** two friend interviews are recorded. **UNVERIFIED:** neither establishes the needs of a person who has chosen a contract and is about to order. Knowledge, fear of unbounded loss, family permission and complexity remain hypotheses. No new interviews or human comprehension tests were fabricated for this build.
+- **REPORTED:** two friend conversations. Aditya described Groww's loss warning, his father's negative experience and family restrictions. Divyanshu described complexity/cost concerns and funded-account forex trading. Neither is an observed completed first-options-order participant. Claims that either lacks no knowledge or is comfortable with all risks are interpretations, not interview findings.
+- **HYPOTHESIS:** unbounded-loss fear and a missing informed moment can be more important than an information shortage. Family permission, complexity, cost and knowledge may matter differently. The prototype does not solve all of them or establish a dominant cause.
+- **OBSERVED — supplied captures/log:** Nubra's dark dashboard, sidebar, Option Buyer label, option chain and Strategies payoff metrics. Showing max loss/breakeven alone is not a defensible novelty claim.
+- **UNKNOWN:** Nubra's actual order ticket, Option Buyer behaviour, complete first-trade experience and whether existing assistance already solves the problem. The proposed ticket and constructed baseline are labelled accordingly. Screenshots cannot establish that an absent item is absent across the service.
+- **NOT RUN:** human comprehension, real first-order observations and 90-day outcomes. Automated cases, screenshots and simulated fills are software checks, not user research.
+- **REPORTED — brief:** one-pager300–700 words, original prompts including failures, evals and working link. ONE_PAGER.md is now included under the current explicit request. PROMPTS.md contains slots only, not reconstructed messages.
 
-## Synthetic data and policies
+## Current implementation boundaries
 
-- **ASSUMED:** every contract, symbol, quote, order, depth, open-interest/volume value, balance and settlement event is synthetic. SIM is a fictional exchange label. The market strip does not update and does not represent a live quote.
-- **ASSUMED:** account cash starts at ₹25,000. It is not a suggested capital amount.
-- **ASSUMED:** form initially contains one lot as a minimum-lot placeholder and an editable quote-based limit. These are not endorsed sizes or prices; the user must review them. The tool never searches for contracts that fit a budget or changes the selected contract.
-- **ASSUMED:** frozen clock is 26 October 2026, 13:00 IST. Synthetic expiry is 27 October 2026, 15:30 IST. These are fixture dates, not verification of an exchange calendar or settlement-price method. Wall-clock time does not make the demo expire later.
-- **ASSUMED:** quote age >30 seconds, future-dated quotes, missing two-sided depth, crossed quotes and spread >5% of midpoint block review. The thresholds are prototype policies, not broker or exchange thresholds.
-- **ASSUMED:** 1–100 whole lots, ₹0.05 fixture tick, and finite positive price bounds are numerical/simulation policies. Real lot/tick sizes must come from current contract metadata.
-- **ASSUMED:** “partial 50%” is half the remaining whole lots rounded down, with a minimum of two remaining lots. Real execution can be more complex. No queue priority, hidden liquidity or stochastic fills are modelled.
-- **ASSUMED:** synthetic quoted depth is consumed by fills. Applying a fresh scenario replenishes its invented depth. Fills happen only after an evaluator click and still need a matching bid/ask at the order's limit.
-- **ASSUMED:** only DAY carry orders are supported. No intraday square-off engine, margin offsets, pledged collateral, tax P&L reporting, American exercise or corporate actions are simulated.
-- **ASSUMED:** expiry processing is one simplified event: expire pending remainders and settle filled index positions. A repeated settlement is blocked. This is not an exchange or broker implementation.
-- **ASSUMED:** cancellation is synchronous but records “requested” and “completed” events. A rejected/cancelled remainder never erases existing fills.
-- **ASSUMED:** all state lives in memory. Reload/Reset clears account state. No personal data is transmitted, stored remotely or restored across sessions.
-- **ASSUMED:** mode is stored only in the hash (`#?mode=baseline` or `#?mode=review`). The app has no SPA server routing dependency. Baseline omits proactive guidance; execution validations and exit mechanics are shared. Record whether a comprehension comparison tests the entire guided journey or review only.
+- **ASSUMED scope:** user-selected single-leg cash-settled index option purchases. Existing long units can be sold to close. Opening option sales, stock options, futures, strategies, recommendations, forecasts, sizing, suitability, runtime LLMs, live data and real execution are excluded.
+- **ASSUMED shell:** original SVG/CSS/system-font dashboard inspired by supplied web captures. No logos, screenshots, proprietary assets or real market data are embedded.
+- **ASSUMED existing navigation:** Option Chain, Orders and Portfolio work; the other nine items retain v2 explanatory overviews. No advanced workspaces are implemented. Changing these items to inactive is a P1 decision, not included in P0.
+- **ASSUMED P0 first impression:** the page opens on the chain; no contract is preselected. A contract click preserves that user selection while disclosure and optional context are shown. F&O also opens the disclosure. No first-entry acknowledgement is treated as demonstrated comprehension.
+- **ASSUMED disclosure:** v2's dated historical figures are retained from the supplied screenshot and the previously checked19May2023 circular, based on FY2021–22. They are not current personal order odds or an asserted current compliance template. [FILL: verify prescribed wording/current source before production claims].
+- **ASSUMED review:** four consequences open immediately; secondary sections are collapsed. Optional glossary remains available. There is no compulsory learning sequence or badge. Back-out/edit/submit use the same button style and equal grid width.
+- **ASSUMED evaluator flag:** `?eval=1` reveals a collapsed drawer. Default has no drawer or its jargon. This is presentation gating, not access control. Hash comparison URLs remain compatible.
+
+## Synthetic fixtures and order policies
+
+- All symbols, quotes, balances, OI, volume, depths, previous closes, ranges and orders are invented. SIM is a fictional exchange. A/B/E/F/G/H are six normal same-expiry contracts. C is the isolated no-bid case; D is an excluded physical stock fixture. REG-C/REG-P and GOLD-C/GOLD-P are separate regressions.
+- The22,600 CE150.45/PE78.95 regression premiums were inferred from logged Strategies exports; they are not contemporaneous executable quotes. Lot65 is a fixture value, not a verified current lot size.
+- Cash starts at₹25,000; initial one lot and editable quoted limit are form placeholders, not recommended sizes/prices. The optional loss budget never changes the selected instrument or quantity.
+- Internal clock is fixed at26Oct2026 13:00IST; synthetic expiry is27Oct2026 15:30IST. These are not a verified exchange calendar. Weekly/monthly fixtures are P1 and remain unimplemented.
+- Stale>30seconds, future quotes, missing two-sided depth, crossed quotes and spread>5% of midpoint block review. These are prototype policies, not Nubra or exchange rules.
+- 1–100 whole lots, positive finite price bounds and₹0.05 tick are fixture/numerical policies. Partial50% fills require at least two remaining whole lots. No fractional-lot fill, random execution, queue priority or hidden liquidity is modelled.
+- Only existing DAY limit / closing stop-limit behaviour remains. Settlement is one simplified event, including expiry of pending DAY remainders; repeated settlement is blocked. No multi-day session engine, RMS cutoffs, exercise schedule or physical settlement is implemented.
+- Submissions are idempotent; pending buys reserve funds; pending closes reserve long units. Cancel/reject affects only unfilled remainders. Actual fills use executable synthetic quotes and consume depth. Closing cannot become an opening short.
+- All state is in memory. Reload/reset clears it. No session logging/download or teach-back UI is added; both are P1. The separate research CSV is manually completed after consent.
 
 ## Fees and arithmetic
 
-- **ASSUMED:** profile name is “Synthetic demo fees (not Nubra's charges)”; ₹25 ENTRY, ₹25 EXIT, ₹25 SETTLEMENT, per order/event, not per lot. One complete path costs ₹50. These are invented inclusive totals; no real STT, GST, brokerage or statutory-rate claim is made.
-- **ASSUMED:** even worthless expiry pays the synthetic settlement fee. This is necessary to keep the stipulated fixed-₹50 golden fixture; it must not be presented as actual broker treatment.
-- **ASSUMED:** fee is charged once on the first fill of an entry/exit order, not on each partial fill. No charge on an unfilled cancelled/rejected/expired order. Each separate closing order adds another exit fee. Its fee profile is snapshotted at submission; existing positions retain their initial settlement profile. The UI does not support tariff migration mid-position.
-- **ASSUMED:** pre-trade funding reserves premium at the limit plus entry fee. Future exit/settlement fees are not debited at entry. They can add to losses. Pending close orders reserve position units, not an opening-short margin amount.
-- **SOURCED — mathematics:** Q = lots × lot size. Call expiry net = Q × max(S−K,0) − QP − entry/settlement costs; put expiry net = Q × max(K−S,0) − QP − entry/settlement costs. Early close net uses filled option premiums, not spot direction.
-- **ASSUMED:** integer paise ledgers. Average fill price and a breakeven root can be rational values; monetary ledgers are not rounded from those displayed averages. Partial closes allocate cost basis and unallocated entry fees to the nearest paise; the final close receives the exact remainder, preserving reconciliation.
-- **ASSUMED:** “including costs” exposure is bounded for one entry and one exit/settlement under this fixed profile only. Additional separate exits add fees. If the profile cannot support a bound, the engine returns unavailable rather than inventing an all-in maximum.
-- **SOURCED — regression arithmetic only:** 22,600 CE at 150.45 ×65 = ₹9,779.25; premium-only BE 22,750.45. PE at 78.95 ×65 = ₹5,131.75; premium-only BE 22,521.05. **INFERRED/UNVERIFIED:** these prices were reverse-derived from logged Strategies figures, not confirmed executable quotes. They live separately from the synthetic A/B chain and are not asserted to be contemporaneous.
-- **SOURCED — correction:** long-put maximum gain is finite when the underlying is non-negative. Logged “infinite” long-put profit/short-put loss labels must not be copied as mathematical facts. The engine handles infeasible or zero-only breakeven explicitly.
+- Active **structured synthetic** fee rows invent₹25 per entry and₹25 per closing order or settlement. Demo allocation to brokerage with other category rates explicitly zero is artificial, not a real fee split or tax claim. The old flat25/25/25 representation remains named `synthetic-fixed-v1` for regressions.
+- The Nubra config contains [FILL] fields and `verified:false`. It cannot supply a cost-aware review. Zero is accepted only when explicitly configured; missing fees/metadata block amounts and submission.
+- Supported row bases are option turnover, intrinsic proceeds and GST category sums. Event/side, condition, minimum/cap and rounding are explicit. This is a constrained adapter, not a production-complete tariff engine. Unsupported taxable bases, date schedules, netting or broker events need implementation and independent checks before activation.
+- Integer paise ledgers; exact BigInt fee-rate ratios. Partial fills charge cumulative rounded fee differences. Actual filled prices determine paid turnover. Partial closes allocate basis/entry fees to the nearest paise, final close takes the exact remainder.
+- Fixed-path breakeven retains a rational root. Variable fee breakeven solves the complete rounded net equation on an integer-paise level grid, only under a conservative monotonicity condition. Unsupported fee schedules or numerical range block submission. Approximate grid roots can have a small residual.
+- All-in max loss is shown only for a proven supported fixed-fee single-entry/single-exit-or-settlement path. Variable models return unavailable rather than claim a bound. Extra separate closing orders may add costs. Entry funds exclude later closing/settlement fees. Margin is never a universal loss ceiling.
+- The invented settlement charge applies even to worthless expiry in the regression. This is not actual broker treatment. A purchased put's maximum profit is finite on a non-negative index; logged “infinite put profit” labels are not copied as facts.
+- Premium scales with lots. Fixed per-order charges do not: total=n×premium+fees(n), not n×the one-lot total. Tests distinguish these cases.
 
-## Human and production verification still needed
+## Remaining verification / [FILL]
 
-1. Recruit 2–3 suitable participants, record consent, baseline/review answers and confidence. Current human results are **NOT RUN**. Small samples are formative, not statistical validation.
-2. Verify Nubra's actual ticket, Option Buyer behaviour and first-trade experience before making comparative claims. A visible button or missing item in one screenshot is not proof of acceptance or absence elsewhere.
-3. Confirm the mapped Nubra brokerage plan, statutory fee bases/rates/rounding, IPFT/clearing charges, exercise versus early-sale treatment, effective dates and RMS/square-off costs. No real tariff has been implemented.
-4. Confirm current exchange contract metadata/calendar, cash versus physical settlement, order-type restrictions, broker cutoffs and disclosures before any production work. This offline concept is not compliance certification.
-5. Verify any SEBI FY25/FY26 loss statistics, “92% from options,” activation thresholds/timing, mandatory-exam claims and historical video inferences from original sources before citing them. The app deliberately does not repeat these unchecked claims.
-6. Confirm advice boundaries, data rights, consent, audit obligations and security with broker compliance before integration. No suitability score or investment recommendation is provided here.
-7. Test your deployed GitHub Pages link logged out. Actual GitHub hosting/account permissions cannot be validated until you upload and enable Pages.
+1. Complete the source/effective-date/plan, brokerage, statutory, exchange, GST, stamp, rounding and path fields in FEES.md/config; verify independently. Current Nubra fee correctness: **NOT VERIFIED**.
+2. Obtain actual Nubra ticket and flow evidence, including activation/disclosure, review placement and exits, before comparative claims.
+3. Verify current exchange metadata, settlement, permitted orders, disclosures and broker cutoff/RMS treatment. This project is not compliance certification or a permission to trade.
+4. Paste original prompts unchanged into PROMPTS.md, with truthful dates/outcomes/failed attempts.
+5. Run consented comprehension sessions, complete the CSV, report confident errors and corrections, and replace the one-pager's metric placeholder with actual findings. If unavailable, retain NOT RUN.
+6. Independently calculate the FEES.md spreadsheet cases; do not use passing engine tests as the candidate's hand check.
+7. Upload and verify the delivered P0 package on Pages logged out. P0 deployment by this assistant: **NOT RUN**. No remote commit/PR/settings edit was made.
 
-No runtime AI, network requests, API keys, copied brand assets, third-party scripts or real account data are used.
-
-## v2 decisions and current evidence
-
-- **OBSERVED — live demo and GitHub:** inspected the supplied Pages site and repository at commit `5beb947d74d602dcde994d381eec2c3221d75910`. The original nine advanced sidebar controls stopped at a toast and the chain dropdown had one choice. The update changes local source and provides a ZIP; no remote commit, PR or deployment was made.
-- **ASSUMED — “same error”:** interpreted the requested popup as the F&O risk disclosure in the supplied Nubra screenshot, not KYC pending or a trading rejection. It is reproduced with explicit historical context. No account error or fake failed KYC is introduced.
-- **SOURCED — disclosure:** the four historical figures match the supplied screenshot and SEBI circular of 19 May 2023. Its cited underlying study covers FY 2021–22 (published 25 January 2023). This is not a current personal loss probability. Current prescribed wording still needs a separate production review.
-- **ASSUMED — scope expansion:** a short optional, order-specific guidance layer, searchable definitions and sidebar summaries have been added. No compulsory tutorial, quiz, recommendations, readiness badge or return forecast is introduced. Declining or turning off guidance does not prevent the normal review flow.
-- **ASSUMED — navigation:** Option Chain, Orders and Portfolio are working areas. The other nine navigation entries are informative overview panels, not implemented trading products. The AI panel is a deterministic term helper and expressly has no runtime model.
-- **ASSUMED — normal chain:** E/F at strike 22,500 and G/H at 22,700 supplement A/B at 22,600; all are invented. Their ask differences equal the stipulated spot–strike difference for internal fixture consistency, not a full arbitrage-free pricing model. C no-bid and D physical-settlement remain separate edge fixtures.
-- **ASSUMED — metrics:** OI and volume are now explicitly in contracts. Price/activity uses invented previous closes and ranges. Numerical IV, Greeks, PCR, POP and max pain are not calculated; the glossary explains their meaning and limits.
-- **ASSUMED — simulation usability:** a normal visitor may trigger a synthetic fill from the order-status screen. It still uses the original matching/depth rules, does not automatically execute, and cannot place real orders. Additional controls remain in the evaluator drawer.
-- **ASSUMED — disclosure timing:** the popup occurs at first F&O entry per in-memory session and repeats after Reset. This is a demonstration choice, not a claim to reproduce every required broker disclosure occasion.
-- **ASSUMED — metric help:** manual metric help is available in both comparison modes. Baseline suppresses the proactive context cards and uses an explicit baseline invitation. Comprehension reports must say whether the experiment tested the entire guided journey or only the final review, to avoid attributing earlier learning solely to the review screen.
-- **ASSUMED — version/cache:** a v2.0 label and relative static cache keys make the new assets recognisable. No fetch, external font, CDN, API or runtime dependency was added.
-
-### Source references (documentation only; the app makes no network request)
-
-- User-supplied Nubra/Kite captures and v2 conversation log.
-- https://www.sebi.gov.in/sebi_data/attachdocs/may-2023/1684493716856.pdf
-- https://www.nseindia.com/option-chain
-- https://support.zerodha.com/category/trading-and-markets/charts-and-orders/order/articles/what-are-stop-loss-orders-and-how-to-use-them
-- https://robinhood.com/us/en/support/articles/placing-an-options-trade/ (benchmark only, not Indian settlement rules).
+The log's unchecked FY25/FY26 statistics, market loss shares, activation thresholds, mandatory-exam claims and video inferences have not been promoted to facts. No new sourced market/regulatory claim is needed for these P0 changes.

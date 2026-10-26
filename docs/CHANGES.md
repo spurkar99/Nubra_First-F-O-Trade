@@ -1,3 +1,13 @@
+# v2.1 P0 changes
+
+P0 only: fee adapter/config and complete net-equation breakeven; four-consequence review with collapsed detail and equal actions; chain entry with preserved user selection; hidden evaluator drawer except `?eval=1`; reviewer README,553-word one-pager, original-prompt template and prewritten comprehension kit; expanded executable checks and full source handoff.
+
+No real fees, participant outcomes or prompt history are invented. No remote commit/PR/deployment was made. P1/P2 remain deferred. See [P0_REVIEW.md](P0_REVIEW.md) and [EVALS.md](EVALS.md).
+
+---
+
+The following records the earlier v2 delivery; its deployment/version wording is historical.
+
 # v2.0 changes
 
 ## What the audit found

@@ -41,29 +41,53 @@
     if(o.type==='SL_LIMIT'&&(o.intent!=='CLOSE'||!positive(o.triggerPaise)||o.triggerPaise%c.tickPaise!==0||o.limitPaise>o.triggerPaise))e.push(error('STOP','A closing sell stop needs a positive, tick-valid trigger at or above its limit.'));
     return e;
   }
+  function intrinsic(c,s){return c.optionType==='CE'?Math.max(s-c.strikePaise,0):Math.max(c.strikePaise-s,0);}
+  function feeContext(p,q,intrinsicPerUnit){return {premiumPaise:p*q,intrinsicPaise:(intrinsicPerUnit||0)*q};}
   function expiry(c,p,q,s,fees){
     if(!nonnegative(s)||!positive(p)||!positive(q))throw new Error('Invalid expiry calculation input.');
-    var intrinsic=c.optionType==='CE'?Math.max(s-c.strikePaise,0):Math.max(c.strikePaise-s,0);
-    return q*(intrinsic-p)-Fees.path(fees,'SETTLEMENT');
+    var payoff=intrinsic(c,s)*q,premium=p*q;
+    if(!Number.isSafeInteger(payoff)||!Number.isSafeInteger(premium))throw new Error('Calculation exceeds integer bounds.');
+    return payoff-premium-Fees.path(fees,'SETTLEMENT',feeContext(p,q,0),{premiumPaise:payoff,intrinsicPaise:payoff});
+  }
+  function breakEven(c,p,q,fees){
+    var zero={premiumPaise:0,intrinsicPaise:0},entry=feeContext(p,q,0);
+    if(Fees.flatPath(fees)){
+      var cost=Fees.path(fees,'SETTLEMENT',entry,zero);
+      var numerator=c.optionType==='CE'?(c.strikePaise+p)*q+cost:(c.strikePaise-p)*q-cost;
+      var root=(c.optionType==='CE'||numerator>=0)?numerator/q:null;
+      return {root:root,numerator:numerator,denominator:q,status:root===null?'NO_FEASIBLE':'SOLVED',
+        threshold:root===null?null:(c.optionType==='CE'?Math.ceil(root):Math.floor(root)),
+        canProfit:c.optionType==='CE'||numerator>0};
+    }
+    if(!Fees.monotoneSettlement(fees,q))return {root:null,status:'UNSUPPORTED_FEES',canProfit:null,threshold:null};
+    var call=c.optionType==='CE',lo=call?c.strikePaise:0,hi=call?RULES.maxPricePaise:c.strikePaise;
+    var lower=expiry(c,p,q,lo,fees),upper=expiry(c,p,q,hi,fees);
+    if((call&&upper<0)||(!call&&lower<0))return {root:null,status:call?'OUTSIDE_RANGE':'NO_FEASIBLE',canProfit:false,threshold:null};
+    while(lo<hi){var mid=call?Math.floor((lo+hi)/2):Math.ceil((lo+hi)/2);var net=expiry(c,p,q,mid,fees);
+      if(call){if(net>=0)hi=mid;else lo=mid+1;}else{if(net>=0)lo=mid;else hi=mid-1;}}
+    return {root:lo,threshold:lo,status:'SOLVED_GRID',numerator:null,denominator:null,
+      canProfit:call?upper>0:lower>0,residualPaise:expiry(c,p,q,lo,fees)};
   }
   function analyse(c,o,fees){
     if(!Fees.valid(fees))throw new Error('Fees unavailable; costs are not zero.');
     var errs=orderErrors(c,o);if(errs.length)throw new Error(errs[0].message);
     var q=o.lots*c.lotSize,p=o.limitPaise,premium=q*p;
     if(!Number.isSafeInteger(premium)||!Number.isSafeInteger(c.strikePaise*q))throw new Error('Calculation exceeds integer bounds.');
-    var path=Fees.path(fees,'SETTLEMENT');
-    var numerator=c.optionType==='CE'?(c.strikePaise+p)*q+path:(c.strikePaise-p)*q-path;
-    var feasible=c.optionType==='CE'||numerator>=0;
-    var raw=feasible?numerator/q:null;
-    var maxTotal=fees.bounded?premium+Math.max(Fees.path(fees,'EXIT'),path):null;
-    return {units:q,premiumPaise:premium,entryFeePaise:Fees.charge(fees,'ENTRY'),entryFundsPaise:premium+fees.entryPaise,
-      expiryPathFeePaise:path,exitPathFeePaise:Fees.path(fees,'EXIT'),grossMaxLossPaise:premium,
+    var entryCtx=feeContext(p,q,0),zero={premiumPaise:0,intrinsicPaise:0};
+    var entryFee=Fees.charge(fees,'ENTRY',entryCtx),be=breakEven(c,p,q,fees);
+    if(!nonnegative(premium+entryFee))throw new Error('Entry funds exceed integer bounds.');
+    var bePayoff=be.root==null?0:intrinsic(c,be.threshold)*q;
+    var path=Fees.path(fees,'SETTLEMENT',entryCtx,{premiumPaise:bePayoff,intrinsicPaise:bePayoff});
+    var atZero=Fees.path(fees,'SETTLEMENT',entryCtx,zero),exitZero=Fees.path(fees,'EXIT',entryCtx,zero);
+    var maxTotal=Fees.supportsBound(fees)?premium+Math.max(exitZero,atZero):null;
+    return {units:q,premiumPaise:premium,entryFeePaise:entryFee,entryFundsPaise:premium+entryFee,
+      feeLabel:Fees.label(fees),feeProfileId:fees.id,entryBreakdown:Fees.quote(fees,'ENTRY',entryCtx).items,
+      expiryPathFeePaise:path,zeroPayoffPathFeePaise:atZero,exitPathFeePaise:Fees.path(fees,'EXIT',entryCtx,entryCtx),grossMaxLossPaise:premium,
       maxLossIncludingCostsPaise:maxTotal,grossBreakEvenPaise:c.optionType==='CE'?c.strikePaise+p:c.strikePaise-p,
-      breakEvenPaise:raw,breakEvenNumerator:numerator,breakEvenDenominator:q,
-      thresholdPaise:feasible?(c.optionType==='CE'?Math.ceil(raw):Math.floor(raw)):null,
-      canProfitAtExpiry:c.optionType==='CE'||numerator>0,
-      grossMaxProfitPaise:c.optionType==='PE'?q*(c.strikePaise-p):null,
-      netMaxProfitPaise:c.optionType==='PE'?q*(c.strikePaise-p)-path:null};
+      breakEvenPaise:be.root,breakEvenStatus:be.status,breakEvenResidualPaise:be.residualPaise||0,
+      breakEvenNumerator:be.numerator,breakEvenDenominator:be.denominator,thresholdPaise:be.threshold,
+      canProfitAtExpiry:be.canProfit,grossMaxProfitPaise:c.optionType==='PE'?q*(c.strikePaise-p):null,
+      netMaxProfitPaise:c.optionType==='PE'?expiry(c,p,q,0,fees):null};
   }
   function preflight(c,o,q,fees,context,now){
     var e=contractErrors(c,now);e=e.concat(orderErrors(c,o));
@@ -71,6 +95,7 @@
     if(!Fees.valid(fees))e.push(error('FEES','Fees are missing. A cost-aware review cannot be completed.'));
     if(e.length)return {ok:false,errors:e,analysis:null};
     var a;try{a=analyse(c,o,fees);}catch(err){return {ok:false,errors:[error('CALC',err.message)],analysis:null};}
+    if(o.intent==='OPEN'&&['UNSUPPORTED_FEES','OUTSIDE_RANGE'].includes(a.breakEvenStatus))e.push(error('FEES_MODEL','Cost-aware breakeven cannot be verified for this fee model or search range. Submission is blocked.'));
     if(o.intent==='OPEN'){
       if(!context||!nonnegative(context.availablePaise)||a.entryFundsPaise>context.availablePaise)e.push(error('FUNDS','Available simulated funds do not cover entry funds at the limit.'));
       if(context&&context.lossBudgetPaise!=null){
@@ -83,9 +108,9 @@
   }
   function realised(p,e,q,fees){
     if(!positive(p)||!nonnegative(e)||!positive(q))throw new Error('Invalid realised P&L inputs.');
-    return q*(e-p)-Fees.path(fees,'EXIT');
+    return q*(e-p)-Fees.path(fees,'EXIT',feeContext(p,q,0),feeContext(e,q,0));
   }
   return {RULES:RULES,money:money,level:level,parsePaise:parsePaise,positive:positive,nonnegative:nonnegative,
     contractErrors:contractErrors,quoteErrors:quoteErrors,orderErrors:orderErrors,analyse:analyse,
-    preflight:preflight,expiry:expiry,realised:realised};
+    preflight:preflight,expiry:expiry,realised:realised,intrinsic:intrinsic,feeContext:feeContext};
 }));

@@ -31,7 +31,7 @@
   return { CLOCK:CLOCK, EXPIRY:EXPIRY, contracts:contracts, clone:clone,
     contract:function(id) { var c=contracts.find(function(c){return c.id===id;});return c?clone(c):null; },
     stats:function(id){var map={A:[1340,320],B:[246,617],E:[1720,445],F:[530,285],G:[990,360],H:[1140,504],C:[110,29]};var v=map[id]||[100,25];var q=quote(id);return {oiContracts:v[0],volumeContracts:v[1],ltpPaise:q?q.ltpPaise:null,previousClosePaise:q?Math.max(5,q.ltpPaise-25):null,lowPaise:q?Math.max(5,q.ltpPaise-60):null,highPaise:q?q.ltpPaise+40:null};},
-    quote:quote, fees:function(){return clone(Fees.DEMO);},
+    quote:quote, fees:function(){return clone(Fees.LEGACY_FLAT);}, activeFees:function(){return Fees.active();},
     order:function(id, lots) {return {contractId:id,lots:lots||1,side:'BUY',intent:'OPEN',type:'LIMIT',
       limitPaise:quote(id).askPaise,validity:'DAY',product:'SIM_CARRY',triggerPaise:null};} };
 }));

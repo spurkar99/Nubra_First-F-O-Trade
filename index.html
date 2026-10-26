@@ -5,21 +5,22 @@
   <meta name="description" content="An offline concept prototype for understanding a chosen first options order. Synthetic data, simulated orders only.">
   <title>Order clarity · First order, understood</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="assets/css/styles.css?v=2.0">
+  <link rel="stylesheet" href="assets/css/styles.css?v=2.1-p0">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <div class="concept-banner">Concept prototype - Synthetic data - No real orders</div>
   <header class="topbar"><div class="wordmark">ORDER<span> / </span>CLARITY <span class="concept-tag">CONCEPT</span></div>
-    <button class="product-tab" data-action="enter-fno" id="fno-entry">F&amp;O</button><span class="release-tag">v2.0</span><div class="header-tools"><button class="text-button" id="guidance-toggle" data-action="guidance">Guidance</button><button class="text-button" data-action="glossary">Metrics explained</button></div>
+    <button class="product-tab" data-action="enter-fno" id="fno-entry">F&amp;O</button><span class="release-tag">v2.1 P0</span><div class="header-tools"><button class="text-button" id="guidance-toggle" data-action="guidance">Guidance</button><button class="text-button" data-action="glossary">Metrics explained</button></div>
     <a class="test-link" href="tests.html">Run tests <span aria-hidden="true">↗</span></a>
   </header>
+  <div class="fee-estimate-notice" id="fee-estimate-notice">Amounts including fees: estimate - synthetic fee profile</div>
   <div class="market-strip"><span class="strip-label">SYNTHETIC SNAPSHOT</span><span>DEMO INDEX <b>22,608.20</b></span><span>DEMO BANK <b>688.00</b></span><span id="clock-label">26 Oct 2026 · 13:00 IST</span><span class="offline-label">Offline simulation</span></div>
   <div class="workspace"><nav id="sidebar" class="sidebar" aria-label="Dashboard navigation"></nav><main id="main" tabindex="-1"><div id="app"></div></main></div>
   <dialog id="experience-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <details id="evaluator" class="evaluator">
-    <summary><span class="drawer-dot" aria-hidden="true"></span> Evaluator controls <span class="summary-meta">Reproducible scenarios · frozen clock</span></summary>
+  <details hidden id="evaluator" class="evaluator">
+    <summary><span class="drawer-dot" aria-hidden="true"></span> Evaluator controls </summary>
     <div class="drawer-content">
       <div class="mode-control evaluation-mode" role="group" aria-label="Comprehension test mode"><button id="review-mode" data-mode="review">Review layer</button><button id="baseline-mode" data-mode="baseline">Constructed baseline</button></div>
       <p class="policy-note">Prototype policies, not Nubra or exchange rules: stale &gt; 30 seconds; spread &gt; 5% of midpoint blocks review. Fills are evaluator-triggered and must match a price and whole-lot depth.</p>
@@ -35,6 +36,6 @@
       <p class="small">No real account or network connection. Reset clears all orders, positions, reservations, and scenarios. Reload also starts a fresh simulation.</p>
     </div>
   </details>
-  <script src="assets/js/fees.js?v=2.0"></script><script src="assets/js/fixtures.js?v=2.0"></script><script src="assets/js/engine.js?v=2.0"></script><script src="assets/js/simulator.js?v=2.0"></script><script src="assets/js/explain.js?v=2.0"></script><script src="assets/js/guide.js?v=2.0"></script><script src="assets/js/ui.js?v=2.0"></script>
+  <script src="assets/js/fee-config.js?v=2.1-p0"></script><script src="assets/js/fees.js?v=2.1-p0"></script><script src="assets/js/fixtures.js?v=2.1-p0"></script><script src="assets/js/engine.js?v=2.1-p0"></script><script src="assets/js/simulator.js?v=2.1-p0"></script><script src="assets/js/explain.js?v=2.1-p0"></script><script src="assets/js/guide.js?v=2.1-p0"></script><script src="assets/js/ui.js?v=2.1-p0"></script>
 </body>
 </html>

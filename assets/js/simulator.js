@@ -8,7 +8,7 @@
   Simulation.prototype.reset=function(){
     this.clock=F.CLOCK;this.cashPaise=this.initialPaise;this.contracts={};this.quotes={};
     F.contracts.forEach(function(c){this.contracts[c.id]=F.clone(c);this.quotes[c.id]=F.quote(c.id);},this);
-    this.fees=F.fees();this.rules=F.clone(E.RULES);this.orders=[];this.positions={};this.idempotency={};
+    this.fees=F.activeFees();this.rules=F.clone(E.RULES);this.orders=[];this.positions={};this.idempotency={};
     this.draft=null;this.reviewRecord=null;this.user={firstOptions:true,lossBudgetPaise:null,holdingPeriod:'UNSURE'};
     this.seq=0;this.events=[];this.lastResult=null;return this;
   };
@@ -16,7 +16,7 @@
   Simulation.prototype.active=function(o){return ACTIVE.includes(o.status);};
   Simulation.prototype.reservedPaise=function(){
     return this.orders.reduce(function(sum,o){return sum+(this.active(o)&&o.intent==='OPEN'?
-      o.remainingUnits*o.limitPaise+(o.feeCharged?0:o.feeProfile.entryPaise):0);}.bind(this),0);
+      o.remainingUnits*o.limitPaise+Fees.charge(o.feeProfile,'ENTRY',{premiumPaise:o.fillPremiumPaise+o.remainingUnits*o.limitPaise,intrinsicPaise:0})-o.chargedFeePaise:0);}.bind(this),0);
   };
   Simulation.prototype.availablePaise=function(){return this.cashPaise-this.reservedPaise();};
   Simulation.prototype.closingReserved=function(id){return this.orders.reduce(function(s,o){return s+(o.contractId===id&&o.intent==='CLOSE'&&this.active(o)?o.remainingUnits:0);}.bind(this),0);};
@@ -75,7 +75,8 @@
     var desired=kind==='partial'?Math.floor(remLots/2)*c.lotSize:o.remainingUnits;
     var depth=isBuy?q.askUnits:q.bidUnits,units=Math.min(desired,Math.floor(depth/c.lotSize)*c.lotSize);
     if(units<=0)return {ok:false,code:'DEPTH',message:'Not enough quoted depth for one whole lot. Order stays pending.'};
-    var fee=o.feeCharged?0:Fees.charge(o.feeProfile,isBuy?'ENTRY':'EXIT');
+    var cumulativePremium=o.fillPremiumPaise+units*price;
+    var fee=Fees.charge(o.feeProfile,isBuy?'ENTRY':'EXIT',{premiumPaise:cumulativePremium,intrinsicPaise:0})-o.chargedFeePaise;
     if(isBuy){
       this.cashPaise-=units*price+fee;
       var p=this.positions[c.id];
@@ -119,7 +120,7 @@
     Object.keys(this.positions).forEach(function(id){
       var p=this.positions[id];if(!p.units)return;var c=this.contracts[id];
       var intrinsic=c.optionType==='CE'?Math.max(settlementPaise-c.strikePaise,0):Math.max(c.strikePaise-settlementPaise,0);
-      var proceeds=intrinsic*p.units,fee=Fees.charge(p.feeProfile,'SETTLEMENT');
+      var proceeds=intrinsic*p.units,fee=Fees.charge(p.feeProfile,'SETTLEMENT',{premiumPaise:proceeds,intrinsicPaise:proceeds});
       var net=proceeds-p.costBasisPaise-p.entryFeesRemainingPaise-fee;
       this.cashPaise+=proceeds-fee;p.realisedPaise+=net;p.settlementPaise=settlementPaise;p.settlementNetPaise=net;
       p.settledUnits=p.units;p.units=0;p.costBasisPaise=0;p.entryFeesRemainingPaise=0;p.status='SETTLED';settled.push(id);
@@ -130,7 +131,7 @@
     id=id||(this.draft&&this.draft.contractId)||'A';
     var fresh=F.quote(id);if(!fresh)return;
     fresh.version=(this.quotes[id]?this.quotes[id].version:0)+1;fresh.asOfMs=this.clock;
-    this.quotes[id]=fresh;this.fees=F.fees();
+    this.quotes[id]=fresh;this.fees=F.activeFees();
     if(name==='stale')this.quotes[id].asOfMs=this.clock-31000;
     if(name==='wide'){this.quotes[id].bidPaise=Math.floor(fresh.askPaise*.8/5)*5;}
     if(name==='no-bid'){this.quotes[id].bidPaise=null;this.quotes[id].bidUnits=0;}

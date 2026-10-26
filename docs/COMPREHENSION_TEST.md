@@ -1,76 +1,62 @@
-# Comprehension test protocol
+# Comprehension test kit
 
-## Status
+**Human status: NOT RUN.** No participant answers, confidence scores or findings have been fabricated. This protocol and its criteria are specified before collecting results.
 
-**NOT RUN — no human participant results are claimed.** Automated browser tests are not a substitute for these interviews. Complete the blank scoring sheet after testing; retain partial/incorrect answers honestly.
+## Question being tested
 
-## Participants and consent
+Does the consequence review help an equity investor explain their chosen first option order with fewer confident errors than a plain constructed summary? It is not a test of profitability, trade conversion or whether a person is fit to trade. The baseline is constructed, not Nubra's actual ticket.
 
-Recruit 2–3 people who have bought equities and have not placed an options order, ideally including someone who has considered a specific order. Record any deviation (e.g. forex experience, existing options experience). Ask permission to record notes; use anonymous participant IDs. Do not ask them to fund an account or trade real money.
+Recruit 2–3 equity investors who have not placed an options order, ideally including someone who has considered a specific contract. Record experience deviations. Ask consent to take notes, use anonymous IDs, and never ask for real money or account details.
 
-Tell them: “This is an interface test using invented prices and money. We are testing the explanation, not your financial knowledge. Proceeding, editing and deciding not to trade are all valid.”
+Read: “This is an interface test with fictional prices and money. We are testing the interface, not you. You can edit, leave, or continue. There is no preferred trading decision.”
 
-## Setup: comparable fictional tasks
+## Controlled setup
 
-- Baseline URL: `index.html#?mode=baseline`
-- Review URL: `index.html#?mode=review`
-- Both modes share the same proposed order form and execution checks. Baseline shows a plain constructed summary, not Nubra's real ticket. Compare at the **purchase review moment**. Do not reveal the other mode or the expected answers in advance.
-- Use the separate arithmetic fixtures GOLD-C and GOLD-P in the Evaluator drawer. Each has strike 20,000, premium ₹100 per unit, lot size 50 and the same fixed synthetic fee profile. Ensure one lot, no entered budget, a fresh Normal scenario and no prior orders. For the call, entry is ₹5,025, gross premium exposure ₹5,000 and stated single-path loss ₹5,050; expiry BE 20,101. For the put, expiry BE 19,899. Do not read this key aloud.
-- The tasks differ in direction but have matched numerical complexity. This is a small formative comparison, not a controlled experiment or statistically significant A/B test. Order reversal reduces but cannot remove learning effects.
+1. Facilitator opens `index.html?eval=1#?mode=baseline` or `index.html?eval=1#?mode=review`, resets, clicks F&O, acknowledges the same historical disclosure, declines proactive guidance (Continue with baseline in baseline mode), opens the assigned GOLD-C/GOLD-P fixture and collapses the evaluator drawer. Both fixtures are one lot of 50 units, strike20,000, premium₹100, active synthetic flat-equivalent fee model. Check no old order, no budget and a Normal quote.
+2. For a **review-only comparison**, decline proactive guidance in both conditions. Keep preceding exposure identical. The review condition still has the four-consequence screen; baseline has the plain summary. Keep the glossary available in both and record any use. Do not alternate between testing the whole guided journey and the review screen without labelling it a different study.
+3. Give the same task: “Assume this is the fictional contract you already chose. Review it before deciding. You can leave or edit.” The facilitator selects the fixture to control difficulty, not to recommend an actual trade.
+4. Before showing the assigned summary, ask confidence **1–5 for each of the four dimensions** below: “How confident are you that you could explain this correctly?” Do not collect a knowledge answer or teach the key yet.
+5. Show the assigned summary. Ask the four questions; record exact first answers, time and confidence1–5 immediately after each answer. Do not correct, coach or praise correctness before both tasks finish.
+6. Reset and present the second task with the other interface/fixture. Repeat confidence-before, answers and confidence-after. Ask proceed/edit/decline as an observation only. Debrief after both; any assisted re-test is a separate row, never the original score.
 
-## Script: approximately 10 minutes each
+## Counterbalancing and fixture reversal
 
-1. Record participant's relevant experience, preferred language and whether they have selected an options contract before.
-2. Give the scenario: “Assume you have chosen this fictional contract yourself. Please review the order as you would before deciding. You may leave, edit, or continue.” Do not recommend it or explain the answers.
-3. Open the assigned baseline/review URL and fixture. Let them enter/confirm the order and open Review order. Observe hesitation and what they inspect. Avoid helping before their first answer.
-4. Ask the four questions below, recording their exact first answer and confidence (1–5), plus time to answer. Do not correct answers yet.
-5. Reset, switch interface and use the matched opposite-type fixture. Repeat without coaching.
-6. Ask what, if anything, was confusing or appeared to endorse the decision. Ask whether they would edit, proceed, or decline and why. Their choice is not scored as conversion success.
-7. After both tasks, debrief misunderstandings using the fictional example, without suggesting a real trade. Recheck any critical misconception after a proposed copy fix and label that result as a separate, assisted follow-up.
-
-## Four questions and scoring key
-
-| Dimension | Ask verbatim | Correct | Partial / incorrect examples |
-|---|---|---|---|
-| Outlay | “How much money is committed on entry, including the stated entry charges?” | ₹5,025 at limit: ₹5,000 premium + ₹25 entry fee. Not the later full-path cost. | Partial: knows cost is more than premium but not the amount. Incorrect: ₹100 or ₹5,000 total, or ₹5,050 entry. |
-| Exposure | “How much can be lost, and does a stop guarantee a smaller loss?” | Full ₹5,000 premium, costs additional; stated one-entry/one-exit-or-settlement loss ₹5,050. Stop does not guarantee that intended loss. Multiple separate exits can add fees. | Partial: full premium understood but fees or stop limitations missed. Incorrect: only the stop amount, or margin is a universal cap. |
-| Profit at expiry | “What must happen for profit at expiry? Could the result differ if you exit earlier?” | Call above 20,101; put below 19,899, under synthetic costs. Earlier result uses option exit premium and can differ with time/volatility. | Partial: correct direction but misses cost-adjusted level or time horizon. Incorrect: any underlying rise/fall ensures profit. |
-| Exit | “How would you exit? What happens if the exit order does not fill?” | Sell existing same-contract long units to close. Pending exit leaves exposure open. Cancelling an order does not erase fills; quantity cannot exceed held/unreserved units. | Partial: knows sell-to-close but assumes guaranteed execution. Incorrect: cancel the position or open an unrelated short. |
-
-Correct/partial/incorrect are observations, not an approval to trade. Define **informed** as all four dimensions correct without coaching. A confident incorrect answer is a critical finding. Do not inflate a partial into a pass.
-
-## Fixture / interface order reversal
-
-| Participant | Task 1 | Task 2 |
+| Assigned sequence | Task1 | Task2 |
 |---|---|---|
 | P1 | Baseline + GOLD-C | Review + GOLD-P |
 | P2 | Review + GOLD-C | Baseline + GOLD-P |
 | P3, if available | Baseline + GOLD-P | Review + GOLD-C |
 
-Record the exact order you actually used. Do not describe sequential comparison as randomised if it was not.
+Use P1/P2 for two participants; record the actual sequence and any departure. This balances interface order and crosses contract type with interface across the first two people. P3 reverses fixture order; three people are not perfectly balanced. Learning/carryover remains possible even without feedback. Do not call this randomised or statistically significant.
 
-## Blank scoring sheet
+## Four questions and prewritten answer key
 
-| Participant / task / mode / fixture | Outlay C/P/I | Exposure C/P/I | Expiry C/P/I | Exit C/P/I | Confidence 1–5 | Time | Exact misunderstanding / quote | Proceed / edit / decline |
-|---|---|---|---|---|---|---|---|---|
-| P1 task 1 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | — | — | — | — |
-| P1 task 2 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | — | — | — | — |
-| P2 task 1 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | — | — | — | — |
-| P2 task 2 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | — | — | — | — |
-| P3 task 1 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | — | — | — | — |
-| P3 task 2 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | — | — | — | — |
+| Dimension / exact question | Correct | Partial | Wrong |
+|---|---|---|---|
+| Total cost: “What is the total entry outlay, and which part is premium versus entry fees?” | ₹5,025 at limit =₹5,000 premium +₹25 entry fees. Exit/settlement fee is later. | Understands all50units and additional entry charges but cannot state the correct total/split. | ₹100, ₹5,000 or ₹5,050 as total entry; ignores units or confuses path cost with entry. |
+| Maximum loss: “How much can be lost, including the stated costs? Does a stop cap that amount at your intended loss?” | Entire₹5,000 premium; stated one-entry/one-exit-or-settlement cost₹50, so₹5,050. Stop-limit can stay unfilled; more separate closing orders can add fees. | Full premium understood, but fee caveat or intended-stop limitation missing. | Stop amount or margin treated as universal loss ceiling; only a per-unit amount given. |
+| Expiry profit: “What must happen for net profit at expiry? Would an earlier exit use the same calculation?” | GOLD-C: settlement above20,101. GOLD-P: below19,899. Entry+settlement fees included. Earlier exit uses option premium and may differ with time/volatility. | Correct direction and cost awareness but level/horizon distinction incomplete. | Any rise/fall ensures profit; uses strike alone or applies expiry root as an earlier trading price. |
+| Exit: “How do you exit this position, and what happens if that order does not fill?” | Sell the same held units to close; a matching fill is needed. Pending exit leaves exposure open. Cancelling a pending order does not remove fills or close the position. | Knows closing sale is required but cannot explain pending/cancel distinction. | Cancel the position, buy an unrelated contract, or assumes submission itself removes exposure. |
 
-## Report honestly
+Rubric uses **correct / partial / wrong**, scored from the first uncoached answer. A correct answer can use different words. Do not round partial up to correct. For maximum loss, missing the stop limitation is at most partial. The active structured demo is numerically identical to the named old flat regression; changing tariffs invalidates this key and requires recalculation before any new session.
 
-Report counts by dimension and participant, critical errors, confidence calibration, actual quotes and changes made. Do not extrapolate to all traders or claim validated differentiation from 2–3 people. No 90-day outcomes are available. A later longitudinal study should pair brokerage engagement with comprehension, surprise-cost reports, accidental-short rates, complaints and voluntary non-trading, rather than reward derivatives trade frequency.
+## Headline metric and criteria, defined in advance
 
-## v2 onboarding and experimental controls
+- **Confident-but-wrong count:** number of dimension answers scored **wrong** with confidence-after **4 or5**. Report numerator/total answers by condition (four per task), plus the number of participants with at least one such answer. This is a descriptive count, not significance testing.
+- Also report high-confidence partials separately, all4-correct tasks, correctness by dimension, confidence-before/after, time, help usage and decisions. More confidence without correctness is not success.
+- Formative acceptance criterion: **every review task has all four dimensions correct, zero confident-but-wrong answers and zero high-confidence partials**. Any wrong loss/exit answer requires a fix and a fresh uncoached test. A baseline comparison is reported regardless of direction; no improvement may be claimed if there is none. Two or three participants meeting these criteria still do not validate population performance.
+- Backing out is not failure. Placement rate, profit and trade frequency are not comprehension measures. No readiness badge or compulsory pass gate follows this research scoring.
 
-Both conditions encounter the historical disclosure before F&O access. Baseline shows an explicit baseline invitation and no proactive guidance cards. Review offers optional guidance; record whether the participant opts in. Do not score a voluntary decline as failure.
+## Recording and change log
 
-Choose and document one comparison:
+Use [results_template.csv](results_template.csv), one row per dimension per task. It has preassigned sequences and **NOT RUN** status; empty observation cells mean no data, not zero or wrong. Enter exact answers, 1–5 before/after confidence, rubric score, help, decision and time. Compute the headline flag from score/confidence; do not manually choose flags to improve the result.
 
-1. **Whole-experience comparison:** unguided baseline versus optional guided review journey. The measured difference may include learning from the ticket/chain cards, not just the final review.
-2. **Review-only comparison:** give identical preceding exposure/help to both conditions, then compare the plain summary with the consequence review. Record any manual glossary usage, as it can influence answers.
+| What failed (exact observed answer) | Evidence / participant/task | What I changed | Why | Fresh test / result |
+|---|---|---|---|---|
+| [FILL: after a real test] | [FILL] | [FILL: exact copy/layout change] | [FILL] | NOT RUN |
 
-The glossary is available on demand in both modes. Do not interpret clicking “I understand” as demonstrated comprehension. Use the four uncoached questions and fixture-order reversal. No new participant results were generated for this update.
+Do not fill this table with implementation bugs discovered by automated checks and call them participant findings. Software failures belong in EVALS.md.
+
+## Not tested
+
+Human comprehension; Hindi/regional-language comprehension; first real-order behaviour; family/social permission; actual Nubra ticket comparisons; loss experience with real money; long-term recall; 90-day activity; current fee/rule compliance; full assistive-technology usability; statistical causal lift. All remain **NOT RUN / unverified**, as applicable.

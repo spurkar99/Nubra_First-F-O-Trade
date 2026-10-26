@@ -12,9 +12,9 @@
     premium:['Premium','The option’s price per unit. Multiply it by total units to calculate the premium committed.','A low per-unit number is not the total order cost. The full premium can be lost.'],
     ltp:['LTP','Last traded price: the price of the most recent completed trade in the contract.','It is not necessarily a price available for your next purchase or exit.'],
     bid:['Bid','The highest currently displayed price offered by buyers for the option. A closing sale needs a matching buyer.','Displayed size is limited. A quote can change or disappear before execution.'],
-    ask:['Ask / offer','The lowest currently displayed price at which sellers offer this option.','An offer is not a guaranteed fill. The price and available size can change.'],
+    ask:['Ask / offer','The lowest currently displayed price at which sellers offer this option.','An offer may change before execution. The price and available size can change.'],
     spread:['Bid–ask spread','The difference between the displayed ask and bid. Entering at ask and immediately selling at bid can create a loss before fees.','A larger spread makes displayed-price estimates less useful. This demo blocks a spread over 5% of midpoint as a prototype policy.'],
-    oi:['Open interest','Outstanding contracts that have not yet been closed or settled. Here OI is displayed in contracts, not units.','OI is not today’s trading volume and does not establish whether you should buy or sell.'],
+    oi:['Open interest','Outstanding contracts that have not yet been closed or settled. Here OI is displayed in contracts, not units.','OI is not today’s trading volume and does not select a purchase or sale.'],
     volume:['Volume','The number of contracts traded during the illustrated session.','Volume is not outstanding open interest, a forecast, or a guarantee that your order will fill.'],
     oiChange:['OI change','The change in outstanding contracts compared with the stated earlier snapshot.','Positive OI change alone does not prove that prices will rise or fall.'],
     priceChange:['Price change','The difference between the illustrated LTP and previous close. The percentage uses previous close as its denominator.','Past price movement does not predict the next move. These values are synthetic.'],
@@ -28,8 +28,8 @@
     day:['DAY validity','An unfilled order or remainder expires at the end of its applicable trading day.','This simplified simulator processes outstanding remainders when you run its expiry event; it does not reproduce a broker’s full daily schedule.'],
     carry:['Simulated carry','The demo allows an opened position to remain until you close it or process the synthetic expiry.','It does not model intraday square-off schedules or authorise real overnight trading.'],
     cash:['Cash settlement','At expiry this index-option fixture pays its intrinsic value in cash. No underlying shares are delivered.','This does not describe stock-option settlement. Dates, levels and the event in this demo are synthetic.'],
-    budget:['Your loss budget','An optional amount you enter to compare with this order’s full premium exposure and stated costs.','It is not a guaranteed limit on losses or a position-size recommendation. You can choose not sure.'],
-    fees:['Charges','The invented profile charges ₹25 once per entry order and ₹25 per separate exit order or settlement event.','These are not Nubra’s charges. Real fees can depend on side, turnover, broker plan, date and exit versus exercise.'],
+    budget:['Your loss budget','An optional amount you enter to compare with this order’s full premium exposure and stated costs.','It does not cap the executed loss or determine your position size. You can choose not sure.'],
+    fees:['Charges','The default invented profile charges ₹25 per entry order and ₹25 per separate closing order or settlement. The adapter also supports explicit turnover and settlement bases.','These are not Nubra’s charges. Real fees can depend on side, turnover, broker plan, date and exit versus exercise.'],
     entryFunds:['Entry funds','Premium at your chosen purchase limit plus entry charges. This is what the pending purchase reserves.','Later exit or settlement charges are separate. Entry funds are not the same as full-path loss exposure.'],
     maxLoss:['Gross premium at risk','For the supported purchased option, the entire purchase premium can be lost.','A capped amount is not a low probability of losing it. Costs add to the loss.'],
     netLoss:['Including costs','Premium at risk plus the stated costs for one entry and one closing order or settlement.','More separate closing orders add fees. An entered loss budget or stop does not guarantee a smaller loss.'],
@@ -44,7 +44,7 @@
     unrealised:['Indicative P&L','An estimate of the result if the open position could close at the displayed bid, including the stated allocated costs.','It is not realised money or a promise that all units can exit at that price.'],
     realised:['Realised P&L','The result from units actually closed or settled, after allocated purchase costs and the stated closing costs.','Displayed gains and losses come from the synthetic execution ledger, not market forecasts.'],
     stop:['Stop-limit','A trigger activates a limit order. The activated order still needs a matching price to fill.','If the market gaps beyond the limit, it can stay unfilled. It does not guarantee your chosen loss amount.'],
-    trigger:['Trigger price','The condition that activates a stop-limit order. For this closing sell stop, activation occurs when LTP reaches or falls below the trigger.','The trigger is not a guaranteed execution price.'],
+    trigger:['Trigger price','The condition that activates a stop-limit order. For this closing sell stop, activation occurs when LTP reaches or falls below the trigger.','The trigger activates an order; it is not an execution price.'],
     pop:['Probability of profit / POP','A model-dependent estimate of profit under stated assumptions and a specific horizon.','Not calculated in this demo. Population loss statistics and option delta are not your probability of net profit.'],
     margin:['Margin','Funds or collateral required to support certain positions. It is not a universal maximum-loss limit.','This purchase-only demo labels the purchase premium and costs directly; it does not calculate short-option margin.'],
     iv:['Implied volatility / IV','A model-implied measure of expected variability embedded in an option premium.','Not calculated here. IV is neither the probability of profit nor a forecast of direction.'],
@@ -58,7 +58,7 @@
   var sidebar={
     'Watchlist':['Keep instruments together','A personal list lets you return to contracts without searching again.','It does not rank contracts or tell you what to trade. In this demo, your chosen contract stays on its ticket.'],
     'Market Watch':['A market snapshot','View reference levels and quotes across instruments.','The market strip here contains frozen synthetic values. No live market connection is active.'],
-    'Strategies':['Several legs in one view','Strategy tools combine positions and show their combined payoff.','This first-order prototype supports only a single purchased index option. No strategy or contract is recommended.'],
+    'Strategies':['Several legs in one view','Strategy tools combine positions and show their combined payoff.','This first-order prototype supports only a single purchased index option. This tool does not select a strategy or contract.'],
     'Scalper':['An advanced execution workspace','Typically puts charts and fast order controls together.','One-click execution is not part of this guided flow. You review an order before sending a simulated purchase.'],
     'Investment':['Longer-term holdings','A separate area can organise investments and products beyond options.','Your existing equity experience does not make an option equivalent to owning equity. This demo keeps investments outside its trading scope.'],
     'AI':['An explanation helper','Here you can look up a metric using fixed, offline explanations.','There is no runtime AI, price prediction or contract recommendation. Ask what a number means, not what to buy.'],
@@ -89,5 +89,6 @@
   var risk={title:'Risk disclosure for Futures and Options',period:'FY 2021–22',source:'SEBI study dated 25 January 2023; disclosure circular dated 19 May 2023.',
     bullets:['9 out of 10 individual traders in equity Futures and Options segment incurred net losses.','On average, loss makers registered net trading loss close to ₹50,000.','Over and above net trading losses, loss makers spent an additional 28% of those losses as transaction costs.','Those making net trading profits incurred between 15% and 50% of those profits as transaction costs.'],
     context:'These historical annual trader outcomes are not the probability of this particular order losing money, and are not presented as the latest market statistics.'};
-  return {terms:terms,sidebar:sidebar,get:get,search:search,describeOrder:describeOrder,risk:risk};
+  function evaluatorEnabled(search){return /^\?/.test(String(search||''))&&/(?:^\?|&)eval=1(?:&|$)/.test(String(search||''));}
+  return {evaluatorEnabled:evaluatorEnabled,terms:terms,sidebar:sidebar,get:get,search:search,describeOrder:describeOrder,risk:risk};
 }));
